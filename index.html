@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ДА — студия лазерной резки и гравировки</title>
+<meta name="description" content="Лазерная резка и гравировка фанеры, акрила, МДФ и картона по вашему файлу. От одной детали, сроки от одного дня.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sheet: #E4E7E3;
+    --panel: #F2F4F1;
+    --ink: #16201F;
+    --muted: #55635F;
+    --line: #B7C0BB;
+    --laser: #D92D22;
+    --laser-ink: #FFFFFF;
+    --birch: #D6B88C;
+    --acryl: #8FC9D6;
+    --mdf: #9A7A5A;
+    --board: #C9B79A;
+    --felt: #6E7F86;
+    color-scheme: light;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --sheet: #141C1B;
+      --panel: #1C2625;
+      --ink: #E7ECE8;
+      --muted: #9AA8A3;
+      --line: #35433F;
+      --laser: #FF5B4D;
+      --laser-ink: #1A0907;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --sheet: #141C1B;
+    --panel: #1C2625;
+    --ink: #E7ECE8;
+    --muted: #9AA8A3;
+    --line: #35433F;
+    --laser: #FF5B4D;
+    --laser-ink: #1A0907;
+    color-scheme: dark;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--sheet);
+    color: var(--ink);
+    font-family: "Golos Text", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+  }
+  h1, h2, h3 {
+    font-family: "Unbounded", "Golos Text", system-ui, Arial, sans-serif;
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  h1 { font-size: clamp(1.9rem, 4.6vw, 3.2rem); }
+  h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
+  h3 { font-size: 1.05rem; font-weight: 500; }
+  p { margin: 0; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--laser); outline-offset: 3px; }
+  .wrap { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
+  section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+  .lead { max-width: 52ch; color: var(--muted); }
+
+  /* header */
+  header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.25rem; flex-wrap: wrap; }
+  .logo { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: 1.15rem; text-decoration: none; display: flex; align-items: center; gap: .6rem; }
+  .logo svg { width: 28px; height: 28px; }
+  nav { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  nav a { text-decoration: none; color: var(--muted); font-weight: 500; padding-block: .25rem; border-bottom: 2px solid transparent; }
+  nav a:hover { color: var(--ink); border-bottom-color: var(--laser); }
+
+  /* buttons */
+  .btn {
+    display: inline-block; background: var(--laser); color: var(--laser-ink);
+    font: 600 1rem "Golos Text", system-ui, sans-serif;
+    padding: .9rem 1.6rem; border: 0; border-radius: 2px; text-decoration: none; cursor: pointer;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+  .btn.ghost:hover { background: var(--ink); color: var(--sheet); filter: none; }
+
+  /* hero */
+  .hero { padding-top: clamp(1.5rem, 4vw, 3rem); }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .hero h1 { margin-bottom: 1.25rem; }
+  .hero .actions { display: flex; gap: .9rem; flex-wrap: wrap; margin-top: 2rem; }
+  .facts { display: flex; gap: 2rem; flex-wrap: wrap; margin: 2.5rem 0 0; padding: 0; list-style: none; }
+  .facts li { max-width: 12rem; font-size: .95rem; color: var(--muted); border-left: 3px solid var(--laser); padding-left: .8rem; }
+  .facts b { display: block; color: var(--ink); font-weight: 600; font-size: 1.05rem; }
+  .cutstage { width: 100%; max-width: 440px; justify-self: center; }
+  .cutstage svg { width: 100%; height: auto; display: block; overflow: visible; }
+  #gearFill { fill: var(--birch); fill-opacity: 0; transition: fill-opacity .8s ease; }
+  #gearFill.on { fill-opacity: 1; }
+  .cut { fill: none; stroke: var(--laser); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke .8s ease, stroke-width .8s ease; }
+  .cut.done { stroke: var(--ink); stroke-width: 1.4; }
+  #spark { fill: #fff; stroke: var(--laser); stroke-width: 3; filter: drop-shadow(0 0 6px var(--laser)); opacity: 0; }
+  .cutcap { text-align: center; font-size: .9rem; color: var(--muted); margin-top: 1rem; }
+
+  /* materials */
+  .sec-head { display: grid; gap: .9rem; margin-bottom: 2.5rem; }
+  .mats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 2rem 1.5rem; }
+  .mat svg { width: 100%; height: auto; display: block; margin-bottom: .9rem; }
+  .mat h3 { margin-bottom: .2rem; }
+  .mat .th { font-weight: 600; color: var(--laser); font-size: .95rem; }
+  .mat p { color: var(--muted); font-size: .95rem; margin-top: .3rem; }
+
+  /* products */
+  .band { background: var(--panel); }
+  .rows { border-top: 2px solid var(--ink); }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 1rem 2rem; padding-block: 1.25rem; border-bottom: 1px solid var(--line); }
+  .row p { color: var(--muted); }
+
+  /* calc */
+  .calc { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: start; }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1rem; }
+  .fields .full { grid-column: 1 / -1; }
+  label { display: grid; gap: .35rem; font-weight: 500; font-size: .95rem; }
+  select, input[type="number"], input[type="text"] {
+    font: 400 1rem "Golos Text", system-ui, sans-serif; color: var(--ink); background: var(--panel);
+    border: 1.5px solid var(--line); border-radius: 2px; padding: .7rem .8rem; width: 100%;
+  }
+  .band select, .band input { background: var(--sheet); }
+  .result { background: var(--ink); color: var(--sheet); padding: 1.75rem; border-radius: 2px; }
+  .result .sum { font-family: "Unbounded", sans-serif; font-weight: 700; font-size: clamp(1.8rem, 4vw, 2.5rem); margin: .4rem 0 .8rem; }
+  .result small { display: block; opacity: .75; font-size: .88rem; line-height: 1.5; }
+  .result .btn { margin-top: 1.25rem; }
+
+  /* process */
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 2rem 1.5rem; counter-reset: s; }
+  .steps li { counter-increment: s; padding-top: 1rem; border-top: 3px solid var(--ink); }
+  .steps li::before { content: counter(s); font-family: "Unbounded", sans-serif; font-weight: 700; color: var(--laser); font-size: 1.4rem; display: block; margin-bottom: .4rem; }
+  .steps h3 { margin-bottom: .35rem; }
+  .steps p { color: var(--muted); font-size: .97rem; }
+  .formats { margin-top: 2.5rem; padding: 1.25rem 1.5rem; border-left: 4px solid var(--laser); background: var(--panel); max-width: 62ch; }
+
+  /* contacts */
+  .contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 3rem; }
+  .contacts dl { margin: 0; display: grid; gap: 1.1rem; }
+  .contacts dt { font-size: .9rem; color: var(--muted); }
+  .contacts dd { margin: 0; font-size: 1.15rem; font-weight: 500; }
+  .contacts a { text-decoration-color: var(--laser); text-underline-offset: 4px; text-decoration-thickness: 2px; }
+  footer { padding-block: 2rem; color: var(--muted); font-size: .9rem; border-top: 1px solid var(--line); }
+
+  @media (max-width: 820px) {
+    .hero .wrap, .calc, .contacts { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 1fr; gap: .4rem; }
+    .cutstage { max-width: 340px; }
+  }
+  @media (max-width: 480px) { .fields { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    #gearFill, .cut { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="ДА — на главную">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><path d="M3 3h22v22H3z" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M3 20 20 3" stroke="var(--laser)" stroke-width="2.4"/></svg>
+      ДА
+    </a>
+    <nav aria-label="Разделы сайта">
+      <a href="#materials">Материалы</a>
+      <a href="#calc">Расчёт</a>
+      <a href="#process">Как работаем</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Лазерная резка и гравировка по вашему файлу</h1>
+        <p class="lead">Режем фанеру, акрил, МДФ и картон. Берём заказы от одной детали, готовим к выдаче за 1–3 рабочих дня.</p>
+        <div class="actions">
+          <a class="btn" href="#calc">Рассчитать стоимость</a>
+          <a class="btn ghost" href="mailto:12_st@inbox.ru?subject=Макет на резку">Отправить макет</a>
+        </div>
+        <ul class="facts">
+          <li><b>до 1300 × 900 мм</b>рабочее поле станка</li>
+          <li><b>от 1 штуки</b>без минимального тиража</li>
+          <li><b>±0,1 мм</b>точность реза</li>
+        </ul>
+      </div>
+      <figure class="cutstage" style="margin:0">
+        <svg id="gearSvg" viewBox="0 0 360 360" role="img" aria-label="Шестерёнка, вырезаемая лазером: сначала внутренние отверстия, затем внешний контур">
+          <path id="gearFill" fill-rule="evenodd" d=""/>
+          <g id="cuts"></g>
+          <circle id="spark" r="5"/>
+        </svg>
+        <figcaption class="cutcap">Сначала внутренние отверстия, потом внешний контур — так мы режем каждую деталь.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="materials">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>С чем работаем</h2>
+        <p class="lead">Материал можно привезти свой или заказать у нас: подберём толщину под задачу.</p>
+      </div>
+      <div class="mats">
+        <article class="mat">
+          <svg viewBox="0 0 200 140" aria-hidden="true"><rect width="200" height="140" fill="var(--birch)"/><path d="M0 30h200M0 62h200M0 100h200" stroke="#B99A6C" stroke-width="1" opacity=".6"/><circle cx="100" cy="70" r="32" fill="var(--sheet)"/></svg>
+          <h3>Фанера</h3>
+          <span class="th">3–10 мм</span>
+          <p>Берёза, тополь. Для моделей, декора, упаковки, мебельных деталей.</p>
+        </article>
+        <article class="mat">
+          <svg viewBox="0 0 200 140" aria-hidden="true"><rect width="200" height="140" fill="var(--acryl)"/><path d="M100 28 114 58 148 62 123 84 130 116 100 100 70 116 77 84 52 62 86 58Z" fill="var(--sheet)"/></svg>
+          <h3>Акрил</h3>
+          <span class="th">2–8 мм</span>
+          <p>Прозрачный и цветной. Вывески, таблички, подставки с чистой кромкой.</p>
+        </article>
+        <article class="mat">
+          <svg viewBox="0 0 200 140" aria-hidden="true"><rect width="200" height="140" fill="var(--mdf)"/><rect x="62" y="34" width="76" height="72" rx="6" fill="var(--sheet)"/></svg>
+          <h3>МДФ</h3>
+          <span class="th">3–6 мм</span>
+          <p>Ровная поверхность под покраску. Буквы, панели, шаблоны.</p>
+        </article>
+        <article class="mat">
+          <svg viewBox="0 0 200 140" aria-hidden="true"><rect width="200" height="140" fill="var(--board)"/><path d="M40 70h120M100 20v100" stroke="var(--sheet)" stroke-width="14" stroke-linecap="round"/></svg>
+          <h3>Картон и бумага</h3>
+          <span class="th">до 2 мм</span>
+          <p>Макеты, упаковка, открытки, приглашения с ажурной вырубкой.</p>
+        </article>
+        <article class="mat">
+          <svg viewBox="0 0 200 140" aria-hidden="true"><rect width="200" height="140" fill="var(--felt)"/><path d="M40 70c0-30 30-30 30-30s30 0 30 30-30 40-30 40-30-10-30-40Z" fill="var(--sheet)" transform="translate(30 -4)"/></svg>
+          <h3>Кожа и фетр</h3>
+          <span class="th">до 3 мм</span>
+          <p>Обложки, бирки, кошельки, аксессуары с гравировкой.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Что делаем чаще всего</h2>
+      </div>
+      <div class="rows">
+        <div class="row"><h3>Детали по чертежу</h3><p>Кронштейны, шаблоны, прокладки, элементы корпусов. Режем по DXF, повторяем партии без отличий.</p></div>
+        <div class="row"><h3>Вывески и таблички</h3><p>Объёмные буквы, логотипы, адресные и табличные композиции из акрила и фанеры.</p></div>
+        <div class="row"><h3>Макеты и модели</h3><p>Архитектурные и технические макеты, сборные конструкторы, прототипы.</p></div>
+        <div class="row"><h3>Подарки и сувениры</h3><p>Именная гравировка, брелоки, подставки, наборы для мероприятий.</p></div>
+        <div class="row"><h3>Упаковка</h3><p>Коробки сложной формы, вкладыши, подарочные футляры небольшими тиражами.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="calc">
+    <div class="wrap calc">
+      <div>
+        <div class="sec-head">
+          <h2>Прикиньте стоимость</h2>
+          <p class="lead">Стоимость работы считаем по длине реза. Длину контура покажет любая программа для векторной графики.</p>
+        </div>
+        <div class="fields">
+          <label class="full">Материал
+            <select id="mat"></select>
+          </label>
+          <label>Толщина
+            <select id="thick"></select>
+          </label>
+          <label>Количество, шт
+            <input id="qty" type="number" min="1" max="10000" step="1" value="10" inputmode="numeric">
+          </label>
+          <label class="full">Длина реза одной детали, м
+            <input id="len" type="number" min="0.01" max="1000" step="0.01" value="1.5" inputmode="decimal">
+          </label>
+        </div>
+      </div>
+      <div class="result" aria-live="polite">
+        <span>Ориентировочно за работу</span>
+        <div class="sum" id="sum">—</div>
+        <small id="detail"></small>
+        <small>Материал в стоимость не входит. Точную цену назовём после просмотра файла.</small>
+        <a class="btn" href="mailto:12_st@inbox.ru?subject=Расчёт стоимости резки">Уточнить по файлу</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="process" class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Как мы работаем</h2>
+      </div>
+      <ol class="steps">
+        <li><h3>Присылаете файл</h3><p>На почту или в мессенджер. Нет чертежа — опишите задачу, поможем его нарисовать.</p></li>
+        <li><h3>Проверяем и считаем</h3><p>В течение часа в рабочее время называем цену и срок, указываем, что стоит поправить.</p></li>
+        <li><h3>Режем</h3><p>Делаем тестовый рез на обрезке, затем запускаем всю партию.</p></li>
+        <li><h3>Выдаём</h3><p>Забираете в студии или отправляем курьером и транспортной компанией.</p></li>
+      </ol>
+      <div class="formats">
+        <h3 style="margin-bottom:.4rem">Какие файлы принимаем</h3>
+        <p>DXF, SVG, AI, CDR и векторный PDF. Масштаб 1:1, текст переведён в кривые, контуры не повторяются дважды.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <div class="wrap contacts">
+      <div>
+        <h2 style="margin-bottom:1rem">Приезжайте или пишите</h2>
+        <p class="lead">Отвечаем в рабочее время в течение часа. Можно привезти образец, чтобы мы сразу сделали пробный рез.</p>
+      </div>
+      <dl>
+        <div><dt>Телефон, Алексей</dt><dd><a href="tel:+79177137079">+7 (917) 713-70-79</a></dd></div>
+        <div><dt>Почта</dt><dd><a href="mailto:12_st@inbox.ru">12_st@inbox.ru</a></dd></div>
+        <div><dt>Адрес студии</dt><dd>Ваш город, улица, дом</dd></div>
+        <div><dt>Часы работы</dt><dd>Пн–Пт 10:00–19:00, Сб 11:00–16:00</dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© 2026 Студия лазерной резки «ДА»</div>
+</footer>
+
+<script>
+(function () {
+  /* ---------- hero: laser cut animation ---------- */
+  var NS = "http://www.w3.org/2000/svg";
+  var cx = 180, cy = 180;
+
+  function gearD(N, R, r) {
+    var d = "", step = 2 * Math.PI / N;
+    for (var i = 0; i < N; i++) {
+      var a0 = i * step;
+      var pts = [[a0, r], [a0 + .1 * step, R], [a0 + .5 * step, R], [a0 + .6 * step, r]];
+      for (var j = 0; j < pts.length; j++) {
+        var x = cx + Math.cos(pts[j][0]) * pts[j][1];
+        var y = cy + Math.sin(pts[j][0]) * pts[j][1];
+        d += (i === 0 && j === 0 ? "M" : "L") + x.toFixed(2) + " " + y.toFixed(2);
+      }
+    }
+    return d + "Z";
+  }
+  function circ(x, y, r) {
+    return "M" + (x - r) + " " + y + "a" + r + " " + r + " 0 1 0 " + (2 * r) + " 0a" + r + " " + r + " 0 1 0 " + (-2 * r) + " 0";
+  }
+
+  var jobs = [];
+  for (var k = 0; k < 12; k++) {
+    var a = k * Math.PI / 6 + Math.PI / 12;
+    jobs.push({ d: circ(+(cx + Math.cos(a) * 108).toFixed(2), +(cy + Math.sin(a) * 108).toFixed(2), 5), t: 120 });
+  }
+  for (var m = 0; m < 6; m++) {
+    var b = m * Math.PI / 3;
+    jobs.push({ d: circ(+(cx + Math.cos(b) * 66).toFixed(2), +(cy + Math.sin(b) * 66).toFixed(2), 20), t: 260 });
+  }
+  jobs.push({ d: circ(cx, cy, 16), t: 260 });
+  jobs.push({ d: gearD(20, 150, 132), t: 1900 });
+
+  var fill = document.getElementById("gearFill");
+  fill.setAttribute("d", jobs.map(function (j) { return j.d; }).reverse().join(""));
+
+  var g = document.getElementById("cuts");
+  var spark = document.getElementById("spark");
+  var paths = jobs.map(function (j) {
+    var p = document.createElementNS(NS, "path");
+    p.setAttribute("d", j.d);
+    p.setAttribute("pathLength", "1");
+    p.setAttribute("class", "cut");
+    g.appendChild(p);
+    return p;
+  });
+
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function finish() {
+    paths.forEach(function (p) { p.style.strokeDashoffset = "0"; p.classList.add("done"); });
+    fill.classList.add("on");
+    spark.style.opacity = 0;
+  }
+
+  if (reduce) { finish(); }
+  else {
+    var i = 0, start = null;
+    spark.style.opacity = 1;
+    var total = paths.map(function (p) { return p.getTotalLength(); });
+    function frame(ts) {
+      if (start === null) start = ts;
+      var p = Math.min((ts - start) / jobs[i].t, 1);
+      paths[i].style.strokeDashoffset = String(1 - p);
+      var pt = paths[i].getPointAtLength(p * total[i]);
+      spark.setAttribute("cx", pt.x);
+      spark.setAttribute("cy", pt.y);
+      if (p >= 1) {
+        i++; start = null;
+        if (i >= paths.length) { finish(); return; }
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------- calculator ---------- */
+  // Примерные ставки, ₽ за метр реза. Замените на свои.
+  var RATES = {
+    "Фанера":  { "3 мм": 25, "4 мм": 30, "6 мм": 45, "10 мм": 80 },
+    "Акрил":   { "3 мм": 30, "5 мм": 50, "8 мм": 90 },
+    "МДФ":     { "3 мм": 25, "6 мм": 45 },
+    "Картон":  { "1 мм": 12, "2 мм": 18 },
+    "Кожа и фетр": { "2 мм": 22, "3 мм": 30 }
+  };
+  var MIN_ORDER = 500;
+  var mat = document.getElementById("mat");
+  var thick = document.getElementById("thick");
+  var qty = document.getElementById("qty");
+  var len = document.getElementById("len");
+  var sum = document.getElementById("sum");
+  var detail = document.getElementById("detail");
+
+  Object.keys(RATES).forEach(function (n) {
+    var o = document.createElement("option"); o.textContent = n; mat.appendChild(o);
+  });
+  function fillThick() {
+    thick.innerHTML = "";
+    Object.keys(RATES[mat.value]).forEach(function (t) {
+      var o = document.createElement("option"); o.textContent = t; thick.appendChild(o);
+    });
+  }
+  function fmt(n) { return Math.round(n).toLocaleString("ru-RU") + " ₽"; }
+  function calc() {
+    var q = Math.max(1, parseInt(qty.value, 10) || 0);
+    var l = parseFloat(String(len.value).replace(",", ".")) || 0;
+    var rate = RATES[mat.value][thick.value];
+    if (!rate || l <= 0) { sum.textContent = "—"; detail.textContent = ""; return; }
+    var raw = rate * l * q;
+    var total = Math.max(raw, MIN_ORDER);
+    sum.textContent = fmt(total);
+    detail.textContent = rate + " ₽/м × " + l.toLocaleString("ru-RU") + " м × " + q + " шт" +
+      (raw < MIN_ORDER ? ". Применён минимальный заказ " + fmt(MIN_ORDER) + "." : ".");
+  }
+  mat.addEventListener("change", function () { fillThick(); calc(); });
+  [thick, qty, len].forEach(function (el) { el.addEventListener("input", calc); });
+  fillThick(); calc();
+})();
+</script>
+</body>
+</html>
